@@ -2,6 +2,12 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  # NEXT_PUBLIC_SELF_HOSTED_MODE 是会被 Next.js 内联进前端包的公开开关（值通常是 true/1），
+  # 不是密钥。若它在 Netlify 上被标记为 secret，密钥扫描会在整个构建产物里命中这个短字符串
+  # 导致构建失败，因此把它排除在扫描之外。其他真正的密钥仍照常扫描。
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SELF_HOSTED_MODE"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
